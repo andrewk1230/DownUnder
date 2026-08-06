@@ -1,3 +1,4 @@
+using SUPERCharacter;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,16 +6,20 @@ using UnityEngine.InputSystem;
 /// Third-person orbit rig for <see cref="UnderwaterSwimController"/>.
 ///
 /// The previous version of this file was a *corrector*: SUPER positioned the camera every physics
-/// step and this component nudged the result sideways to reframe the body. That contract is gone.
-/// SUPERCharacterAIO no longer exists anywhere in the scene, so `GetComponent<SUPERCharacterAIO>()`
-/// returned null, `LateUpdate` returned on its first line, and nothing placed the camera at all --
-/// which is why the diagnostics showed both enabled cameras sitting at offsetFromPlayer=(0,0,0),
-/// i.e. inside the character, at capsule-centre height.
+/// step and this component nudged the result sideways to reframe the body. That contract is gone, so
+/// this owns the camera pose outright in third person: it accumulates yaw/pitch from the Look action,
+/// puts the camera on a boom behind the pivot, and writes world position and rotation in LateUpdate.
+/// Writing a world pose every frame means the rig does not care how the camera is parented --
+/// inherited transforms are simply overwritten.
 ///
-/// So this owns the camera pose outright: it accumulates yaw/pitch from the Look action, puts the
-/// camera on a boom behind the pivot, and writes world position and rotation in LateUpdate. Writing
-/// a world pose every frame means the rig does not care how the camera is parented -- inherited
-/// transforms are simply overwritten.
+/// THIRD PERSON ONLY. An earlier revision of this comment claimed SUPERCharacterAIO no longer existed
+/// in the scene; it does, and running this rig in first person as well was actively harmful. SUPER
+/// integrates the same Look action into its own AbsoluteEulerAngles and places the camera at the
+/// head, while this integrates it into `yaw` and places the camera on a third-person boom. Two
+/// independent accumulators writing one transform diverge without bound, and because the swim
+/// controller derives forward/right from that same transform, the WASD basis drifts away from what is
+/// on screen -- slowly, which is why it presented as the controls "eventually" breaking. LateUpdate
+/// now returns immediately in first person and re-seeds yaw/pitch from the camera on the way back.
 ///
 /// The yaw here is driven by look input only, never by the player's facing. That matters: the
 /// controller turns the body toward camera-relative movement (UnderwaterSwimController :138-148,
@@ -82,13 +87,16 @@ public class ThirdPersonCameraPivot : MonoBehaviour
     private static readonly RaycastHit[] HitBuffer = new RaycastHit[8];
 
     private UnderwaterSwimController swim;
+    private SUPERCharacterAIO super;
     private InputAction lookAction;
     private float yaw;
     private float pitch;
+    private bool wasFirstPerson;
 
     private void Awake()
     {
         swim = GetComponent<UnderwaterSwimController>();
+        super = GetComponent<SUPERCharacterAIO>();
 
         PlayerInput playerInput = GetComponent<PlayerInput>();
         if (playerInput != null && playerInput.actions != null)
@@ -126,6 +134,16 @@ public class ThirdPersonCameraPivot : MonoBehaviour
         }
 
         // Start from wherever the camera already points, so enabling the rig does not snap the view.
+        SyncFromCamera();
+    }
+
+    /// <summary>
+    /// Adopt the camera's current pose as this rig's yaw/pitch. Used at Awake and again whenever
+    /// first person hands the camera back, so the view resumes where SUPER left it instead of
+    /// snapping to a stale heading accumulated before the perspective switch.
+    /// </summary>
+    private void SyncFromCamera()
+    {
         Vector3 euler = cameraTransform.rotation.eulerAngles;
         yaw = euler.y;
         pitch = Mathf.Clamp(NormalizeAngle(euler.x), minPitch, maxPitch);
@@ -134,6 +152,21 @@ public class ThirdPersonCameraPivot : MonoBehaviour
     private void LateUpdate()
     {
         if (cameraTransform == null) return;
+
+        // First person belongs to SUPER, which places the camera at the head and runs its own look
+        // accumulator. Touching the transform here would fight it every frame.
+        bool firstPerson = super != null && super.cameraPerspective == PerspectiveModes._1stPerson;
+        if (firstPerson)
+        {
+            wasFirstPerson = true;
+            return;
+        }
+
+        if (wasFirstPerson)
+        {
+            wasFirstPerson = false;
+            SyncFromCamera();
+        }
 
         Vector2 look = lookAction != null ? lookAction.ReadValue<Vector2>() : Vector2.zero;
         yaw += look.x * lookSensitivity;

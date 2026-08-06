@@ -1,3 +1,4 @@
+using SUPERCharacter;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,9 +48,15 @@ public class SwimBodyRotation : MonoBehaviour
     public bool faceCameraWhenIdle = false;
 
     private InputAction moveAction;
+    private SUPERCharacterAIO super;
 
     private void Awake()
     {
+        // First person is SUPER's to steer: it pins the body yaw to the camera yaw every frame
+        // (SUPERCharacterAIO :689), so turning the body toward the input here would be overwritten
+        // later in the same frame and the two would fight for the whole session.
+        super = GetComponent<SUPERCharacterAIO>();
+
         PlayerInput playerInput = GetComponent<PlayerInput>();
         if (playerInput != null && playerInput.actions != null)
         {
@@ -71,6 +78,8 @@ public class SwimBodyRotation : MonoBehaviour
 
     private void Update()
     {
+        if (super != null && super.cameraPerspective == PerspectiveModes._1stPerson) return;
+
         Transform reference = cameraTransform != null ? cameraTransform : transform;
 
         Vector3 forward = reference.forward;
