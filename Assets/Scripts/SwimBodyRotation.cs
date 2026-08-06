@@ -10,9 +10,17 @@ using UnityEngine.InputSystem;
 /// was a body that only appeared to turn when something else happened to be supplying it velocity,
 /// such as the terrain clamp pushing it along a surface normal.
 ///
-/// This runs in LateUpdate, so it writes after the controller's Update and wins the frame outright
-/// regardless of what rotationDamping is set to. RotateTowards with a degrees-per-second rate is
-/// framerate-independent and gives a turn rate you can actually reason about.
+/// This runs in Update ahead of the controller (execution order -50) rather than in LateUpdate.
+/// Ordering matters because the controller reads transform.forward to decide how much speed to
+/// grant (see below): turning after it has already read means it always measures last frame's
+/// facing, sees "misaligned" for the whole duration of a turn, and drops SwimSpeed to zero -- which
+/// flips the Animator to Idle and restarts the swim clip. Turning first keeps that measurement
+/// honest. There is nothing to lose by giving up LateUpdate: the controller's own rotation is
+/// Slerp(rotation, target, rotationDamping * deltaTime), and the scene sets rotationDamping to 0,
+/// which makes it a no-op, so it cannot overwrite what is written here.
+///
+/// RotateTowards with a degrees-per-second rate is framerate-independent and gives a turn rate you
+/// can actually reason about.
 ///
 /// Facing the *movement* direction rather than the camera's is deliberate: the controller scales
 /// horizontal speed by how well the body aligns with where you are pushing
@@ -20,7 +28,7 @@ using UnityEngine.InputSystem;
 /// near 1 and strafing at full speed. Locking the body to the camera instead would drive that factor
 /// to zero whenever you pressed A or D.
 /// </summary>
-[DefaultExecutionOrder(50)]
+[DefaultExecutionOrder(-50)]
 public class SwimBodyRotation : MonoBehaviour
 {
     [Tooltip("Turn rate in degrees per second. Frame-rate independent, unlike the controller's own " +
@@ -61,7 +69,7 @@ public class SwimBodyRotation : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         Transform reference = cameraTransform != null ? cameraTransform : transform;
 
