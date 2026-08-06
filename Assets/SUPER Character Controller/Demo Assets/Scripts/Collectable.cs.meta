@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 5a2a83b59a57dd04c8f4dca38833d8bb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135316
+  packageName: Character Controller SUPER
+  packageVersion: 22.10.9f
+  assetPath: Assets/SUPER Character Controller/Demo Assets/Scripts/Collectable.cs
+  uploadId: 532477

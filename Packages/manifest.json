@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "com.budorf.underwater-swim": "https://github.com/mdj128/yt-underwater-scene.git?path=UnderwaterSwimController",
+    "com.plant.detailtoolkit": "https://github.com/mdj128/yt-underwater-scene.git?path=PlantDetailToolkit",
     "com.unity.ai.navigation": "2.0.13",
+    "com.unity.cinemachine": "3.1.7",
+    "com.unity.cloud.gltfast": "6.19.0",
     "com.unity.collab-proxy": "2.12.4",
     "com.unity.ide.rider": "3.0.38",
     "com.unity.ide.visualstudio": "2.0.26",

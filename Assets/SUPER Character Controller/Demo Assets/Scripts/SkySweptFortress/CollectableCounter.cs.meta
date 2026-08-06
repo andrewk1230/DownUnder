@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e4fad2e8a3136c0458d32930b4221650
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 135316
+  packageName: Character Controller SUPER
+  packageVersion: 22.10.9f
+  assetPath: Assets/SUPER Character Controller/Demo Assets/Scripts/SkySweptFortress/CollectableCounter.cs
+  uploadId: 532477
