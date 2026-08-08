@@ -5937,8 +5937,8 @@ MonoBehaviour:
   aiObjects:
   - m_aiGroupName: Puffer Fish
     m_prefab: {fileID: 919132149155446097, guid: 38f74cd884cda8242b4fdc167c4962f8, type: 3}
-    m_maxAI: 10
-    m_spawnRate: 10
+    m_maxAI: 40
+    m_spawnRate: 20
     m_spawnAmount: 10
     m_scaleMultiplier: 0.3
     m_enableSpawner: 1
@@ -5953,7 +5953,7 @@ MonoBehaviour:
     m_randomizeState: 0
   - m_aiGroupName: Shark
     m_prefab: {fileID: 919132149155446097, guid: ca38d4485fce19f4aa0d3d7bdd8b6cf2, type: 3}
-    m_maxAI: 10
+    m_maxAI: 40
     m_spawnRate: 20
     m_spawnAmount: 10
     m_scaleMultiplier: 0.3
@@ -5961,16 +5961,16 @@ MonoBehaviour:
     m_randomizeState: 1
   - m_aiGroupName: 
     m_prefab: {fileID: 919132149155446097, guid: ae51ad94fa7d3764d957aa512d506d00, type: 3}
-    m_maxAI: 0
-    m_spawnRate: 0
-    m_spawnAmount: 0
+    m_maxAI: 40
+    m_spawnRate: 20
+    m_spawnAmount: 8
     m_scaleMultiplier: 0.3
     m_enableSpawner: 1
     m_randomizeState: 1
   - m_aiGroupName: 
     m_prefab: {fileID: 919132149155446097, guid: ea93ead513f04c9478f78e3f40ba5b11, type: 3}
     m_maxAI: 40
-    m_spawnRate: 0
+    m_spawnRate: 20
     m_spawnAmount: 20
     m_scaleMultiplier: 0.3
     m_enableSpawner: 1
