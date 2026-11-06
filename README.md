@@ -6,16 +6,9 @@ The repository is named **DownUnder**; the local Unity project folder may be nam
 
 ## Demo video
 
-**Demo video coming soon.**
+[▶ Watch the DownUnder gameplay demo](docs/media/downunder-demo.mp4)
 
-<!-- DEMO VIDEO SLOT
-Replace the text above with a link to your uploaded demo, for example:
-[Watch the DownUnder demo](YOUR_VIDEO_URL)
-
-For a clickable preview image, use:
-[![DownUnder gameplay demo](docs/images/demo-thumbnail.jpg)](YOUR_VIDEO_URL)
-Add the thumbnail file before using the image link.
--->
+*20-second gameplay recording · no audio.*
 
 ## What is in the prototype?
 
