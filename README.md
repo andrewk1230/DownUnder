@@ -6,7 +6,7 @@ The repository is named **DownUnder**; the local Unity project folder may be nam
 
 ## Demo video
 
-[▶ Watch the DownUnder gameplay demo](docs/media/downunder-demo.mp4)
+[▶ Open or download the DownUnder gameplay demo](https://github.com/andrewk1230/DownUnder/raw/refs/heads/main/docs/media/downunder-demo.mp4)
 
 *20-second gameplay recording · no audio.*
 
