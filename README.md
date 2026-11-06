@@ -8,10 +8,16 @@ The repository is named **DownUnder**; the local Unity project folder may be nam
 
 
 
-https://github.com/user-attachments/assets/e7a940d6-4baa-4c55-9cb8-0b7c85ce28c6
 
 
-*20-second gameplay recording · no audio.*
+
+
+https://github.com/user-attachments/assets/114efcd3-2cd1-4893-93aa-1a51a46d5b81
+
+
+
+
+*2-minute 40-second gameplay demo · audio included.*
 
 ## What is in the prototype?
 
